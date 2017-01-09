@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">ChatApplication</string>
+    <string name="save">Готово</string>
+    <string name="share_using">Готово</string>
+
+    <string-array name="catlist">
+        <item>ОРТ</item>
+        <item>Россия1</item>
+        <item>ТНТ</item>
+        <item>НТВ</item>
+        <item>СТС</item>
+        <item>ТВЦ</item>
+        <item>Рентв</item>
+        <item>5 канал</item>
+        <item>Россия 24</item>
+        <item>ТВ3</item>
+        <item>Домашний</item>
+        <item>2x2</item>
+        <item>Пятница</item>
+        <item>Звезда</item>
+        <item>Дисней</item>
+        <item>Че</item>
+        <item>Ю</item>
+    </string-array>
+</resources>
+
+

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/grayColor"
+    tools:context="com.example.admin.chatapplication.activity.PostActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Канал"
+        android:id="@+id/textView3"
+        android:textColor="@color/grayText"
+        android:layout_below="@+id/imageButton1"
+        android:layout_alignLeft="@+id/imageButton1"
+        android:layout_alignStart="@+id/imageButton1"
+        android:layout_marginTop="11dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mSp"
+        android:entries="@array/catlist"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_marginTop="33dp"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_alignRight="@+id/imageButton1"
+        android:layout_alignEnd="@+id/imageButton1" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mPostTitle"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:ems="10"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:layout_alignLeft="@+id/imageButton1"
+        android:layout_alignStart="@+id/imageButton1"
+        android:layout_alignRight="@+id/imageButton1"
+        android:layout_alignEnd="@+id/imageButton1"
+        android:hint="Тема..." />
+
+    <ImageButton
+        app:srcCompat="@drawable/logo_googleg_color_18dp"
+        android:id="@+id/imageButton1"
+        android:layout_height="50dp"
+        android:layout_width="350dp"
+        android:layout_below="@+id/mPostTitle"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
