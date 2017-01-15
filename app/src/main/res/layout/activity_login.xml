@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:hint="login" />
+        android:hint="email..." />
 
     <EditText
         android:layout_width="match_parent"
@@ -27,12 +27,12 @@
         android:layout_below="@+id/loginEmailField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp"
-        android:hint="password" />
+        android:hint="@string/password" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/login"
         android:id="@+id/loginBtn"
         android:hint="Login"
         android:layout_below="@+id/loginPasswordField"
@@ -43,7 +43,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registration"
+        android:text="@string/registration"
         android:id="@+id/registrationBtn"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />

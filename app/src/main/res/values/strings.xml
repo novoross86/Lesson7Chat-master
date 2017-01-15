@@ -2,6 +2,11 @@
     <string name="app_name">ChatApplication</string>
     <string name="save">Готово</string>
     <string name="share_using">Готово</string>
+    <string name="password">Пароль...</string>
+    <string name="login">Войти</string>
+    <string name="registration">Регистрация</string>
+    <string name="name">Имя...</string>
+    <string name="reg_in">Зарегистрироваться</string>
 
     <string-array name="catlist">
         <item>ОРТ</item>

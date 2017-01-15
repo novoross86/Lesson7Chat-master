@@ -105,14 +105,15 @@ public class PostActivity extends AppCompatActivity{
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     final Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-                    final DatabaseReference newPost = mDatabase.push();
+                    //090117
+                    final DatabaseReference newPost = mDatabase.child(currentChannel).push();
                     // получение идентификатора пользователя
                     final String newName = mCurrentUer.getUid();
                     // получение уникальной строки для названия чата
                     final String chatName = channel_val + title_val + newName;
                     // устанавливаем название уникальной строки
-                    final DatabaseReference newChat = chDatabase.child(chatName).push();
+                    //090117
+                    final DatabaseReference newChat = chDatabase.child(currentChannel).child(chatName).push();
 
                     mDatabaseUser.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -125,7 +126,8 @@ public class PostActivity extends AppCompatActivity{
                             newChat.child("image").setValue(dataSnapshot.child("image").getValue());
 
                             newPost.child("title").setValue(title_val);
-                            newPost.child("channel").setValue(channel_val);
+                            //090117
+                            newPost.child("channel").setValue(currentChannel);
                             newPost.child("uid").setValue(mCurrentUer.getUid());
                             newPost.child("username").setValue(dataSnapshot.child("name").getValue());
                             newPost.child("chat_id").setValue(chatName);
@@ -159,13 +161,15 @@ public class PostActivity extends AppCompatActivity{
 
         } else if(!TextUtils.isEmpty(title_val) && !TextUtils.isEmpty(channel_val)) {
 
-            final DatabaseReference newPost = mDatabase.push();
+            //090117
+            final DatabaseReference newPost = mDatabase.child(currentChannel).push();
             // получение идентификатора пользователя
             final String newName = mCurrentUer.getUid();
             // получение уникальной строки для названия чата
             final String chatName = channel_val + title_val + newName;
             // устанавливаем название уникальной строки
-            final DatabaseReference newChat = chDatabase.child(chatName).push();
+            //090117
+            final DatabaseReference newChat = chDatabase.child(currentChannel).child(chatName).push();
 
             mDatabaseUser.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -178,7 +182,8 @@ public class PostActivity extends AppCompatActivity{
                     newChat.child("image").setValue(dataSnapshot.child("image").getValue());
 
                     newPost.child("title").setValue(title_val);
-                    newPost.child("channel").setValue(channel_val);
+                    //090117
+                    newPost.child("channel").setValue(currentChannel);
                     newPost.child("uid").setValue(mCurrentUer.getUid());
                     newPost.child("username").setValue(dataSnapshot.child("name").getValue());
                     newPost.child("chat_id").setValue(chatName);

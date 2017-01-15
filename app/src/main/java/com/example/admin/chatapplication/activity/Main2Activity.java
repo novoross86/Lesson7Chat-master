@@ -53,6 +53,7 @@ public class Main2Activity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+
         // идентификация пользователя
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener(){
@@ -138,7 +139,13 @@ public class Main2Activity extends AppCompatActivity {
             }
         }
 
-        mQueryCurrentRequest = mDatabase.orderByChild("channel").equalTo(currentChannel);
+        //090117
+        //mQueryCurrentRequest = mDatabase.orderByChild("channel").equalTo(currentChannel);
+        mQueryCurrentRequest = mDatabase.child(currentChannel);
+
+        //090117
+        //set Title on actionBar
+        actionBar.setTitle(currentChannel);
 
         mPostList = (RecyclerView)findViewById(R.id.post_list);
         mPostList.setHasFixedSize(true);

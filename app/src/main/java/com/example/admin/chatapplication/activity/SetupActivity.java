@@ -46,7 +46,6 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-
         mProgress = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
         mSetupImageBtn = (ImageButton)findViewById(R.id.imageBtn);
@@ -57,7 +56,6 @@ public class SetupActivity extends AppCompatActivity {
 
         cUser = mAuth.getCurrentUser().getUid();
         mCurentUser = FirebaseDatabase.getInstance().getReference().child("Users").child(cUser);
-
 
         //получение данных пользователя для вставки их форму
         mCurentUser.addValueEventListener(new ValueEventListener() {

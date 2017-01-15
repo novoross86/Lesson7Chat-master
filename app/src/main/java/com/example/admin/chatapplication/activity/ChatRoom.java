@@ -82,7 +82,9 @@ public class ChatRoom extends AppCompatActivity {
 
         setTitle(chat_title);
 
-        root = FirebaseDatabase.getInstance().getReference().child("Chat").child(chat_name);
+        //090117
+        //root = FirebaseDatabase.getInstance().getReference().child("Chat").child(chat_name);
+        root = FirebaseDatabase.getInstance().getReference().child("Chat").child(currentChannel).child(chat_name);
 
         // получаем картинку пользователя
         mDatabaseUsers.addValueEventListener(new ValueEventListener() {
