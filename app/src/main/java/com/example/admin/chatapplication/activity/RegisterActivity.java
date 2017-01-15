@@ -23,6 +23,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mNameField;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private String defaultImage= "https://firebasestorage.googleapis.com/v0/b/chatapplication-7aeb9.appspot.com/o/Profile_image%2Fimage_user.png?alt=media&token=ce12634c-b618-44e5-890b-67fd9211fe8e";
+
 
     private Button mRegisterBtn;
     private DatabaseReference mDatabase;
@@ -77,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                         DatabaseReference cureent_user_db = mDatabase.child(user_id);
 
                         cureent_user_db.child("name").setValue(name);
-                        cureent_user_db.child("image").setValue("default");
+                        cureent_user_db.child("image").setValue(defaultImage);
 
                         mProgress.dismiss();
 
