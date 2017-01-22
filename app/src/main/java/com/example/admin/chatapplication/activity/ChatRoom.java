@@ -304,4 +304,12 @@ public class ChatRoom extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ChatRoom.this,
+                Main2Activity.class);
+        i.putExtra("currentChannel", currentChannel);
+        startActivity(i);
+    }
 }

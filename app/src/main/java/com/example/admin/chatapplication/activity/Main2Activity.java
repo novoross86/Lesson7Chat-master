@@ -31,6 +31,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -185,9 +187,10 @@ public class Main2Activity extends AppCompatActivity {
 
                 viewHolder.setChannel(model.getChannel());
                 viewHolder.setTitle(model.getTitle());
-                viewHolder.setImage(getApplicationContext(), model.getImage());
+                viewHolder.setImage(getApplicationContext(), model.getUser_photo());
                 viewHolder.setLikeBtn(post_key);
                 viewHolder.setPostDate(model.getPostDate());
+                viewHolder.setUsername(model.getUsername());
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -313,6 +316,11 @@ public class Main2Activity extends AppCompatActivity {
 
                }
            });
+        }
+        //2101
+        public void setUsername(String user_name){
+            TextView post_user_name = (TextView)mView.findViewById(R.id.user_name);
+            post_user_name.setText(user_name);
         }
 
         public void setChannel(String channel){

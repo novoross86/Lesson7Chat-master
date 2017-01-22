@@ -3,21 +3,29 @@ package com.example.admin.chatapplication.entity;
 
 public class Post {
 
-    private String channel, title, chat_id, username, image, postDate;
+    private String channel, title, chat_id, user_name, image, postDate, user_photo;
 
-    public Post(String channel, String title, String chat_id, String username, String image,
-                String postDate) {
+    public Post(String channel, String title, String chat_id, String user_name, String image,
+                String postDate, String user_photo) {
         this.channel = channel;
         this.title = title;
         this.chat_id = chat_id;
-        this.username = username;
+        this.user_name = user_name;
         this.image = image;
         this.postDate = postDate;
-
+        this.user_photo = user_photo;
 
     }
 
     public Post() {
+    }
+
+    public String getUser_photo() {
+        return user_photo;
+    }
+
+    public void setUser_photo(String user_photo) {
+        this.user_photo = user_photo;
     }
 
     public String getChatId() {
@@ -33,11 +41,11 @@ public class Post {
     }
 
     public String getUsername() {
-        return username;
+        return user_name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String user_name) {
+        this.user_name = user_name;
     }
 
     public void setChatId(String chat_id) {

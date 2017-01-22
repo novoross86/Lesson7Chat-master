@@ -126,8 +126,9 @@ public class PostActivity extends AppCompatActivity{
                             newChat.child("image").setValue(dataSnapshot.child("image").getValue());
 
                             newPost.child("title").setValue(title_val);
-                            //090117
-                            newPost.child("channel").setValue(currentChannel);
+                            //2101
+                            //newPost.child("channel").setValue(currentChannel);
+
                             newPost.child("uid").setValue(mCurrentUer.getUid());
                             newPost.child("username").setValue(dataSnapshot.child("name").getValue());
                             newPost.child("chat_id").setValue(chatName);
@@ -166,7 +167,8 @@ public class PostActivity extends AppCompatActivity{
             // получение идентификатора пользователя
             final String newName = mCurrentUer.getUid();
             // получение уникальной строки для названия чата
-            final String chatName = channel_val + title_val + newName;
+            //final String chatName = channel_val + title_val + newName;
+            final String chatName = title_val + newName;
             // устанавливаем название уникальной строки
             //090117
             final DatabaseReference newChat = chDatabase.child(currentChannel).child(chatName).push();
@@ -182,10 +184,11 @@ public class PostActivity extends AppCompatActivity{
                     newChat.child("image").setValue(dataSnapshot.child("image").getValue());
 
                     newPost.child("title").setValue(title_val);
-                    //090117
-                    newPost.child("channel").setValue(currentChannel);
+                    //2101
+                    //newPost.child("channel").setValue(currentChannel);
                     newPost.child("uid").setValue(mCurrentUer.getUid());
                     newPost.child("username").setValue(dataSnapshot.child("name").getValue());
+                    newPost.child("user_photo").setValue(dataSnapshot.child("image").getValue());
                     newPost.child("chat_id").setValue(chatName);
 
                     //получение даты и времени
@@ -233,6 +236,8 @@ public class PostActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.post_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+
     //обработка нажатий на пункты меню
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
