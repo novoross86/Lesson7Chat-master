@@ -3,85 +3,65 @@ package com.example.admin.chatapplication.entity;
 
 public class Post {
 
-    private String channel, title, chat_id, user_name, image, postDate, user_photo;
+    private String comments, groups_name, groups_photo_50, likes, tag, txt;
 
-    public Post(String channel, String title, String chat_id, String user_name, String image,
-                String postDate, String user_photo) {
-        this.channel = channel;
-        this.title = title;
-        this.chat_id = chat_id;
-        this.user_name = user_name;
-        this.image = image;
-        this.postDate = postDate;
-        this.user_photo = user_photo;
-
+    public Post(String comments, String groups_name, String groups_photo_50, String likes,
+                String txt) {
+        this.comments = comments;
+        this.groups_name = groups_name;
+        this.groups_photo_50 = groups_photo_50;
+        this.likes = likes;
+        this.txt = txt;
     }
 
     public Post() {
     }
 
-    public String getUser_photo() {
-        return user_photo;
+    public String getComments() {
+        return comments;
     }
 
-    public void setUser_photo(String user_photo) {
-        this.user_photo = user_photo;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
-    public String getChatId() {
-        return chat_id;
+    public String getGroups_name() {
+        return groups_name;
     }
 
-    public String getChat_id() {
-        return chat_id;
+    public void setGroups_name(String groups_name) {
+        this.groups_name = groups_name;
     }
 
-    public void setChat_id(String chat_id) {
-        this.chat_id = chat_id;
+    public String getGroups_photo_50() {
+        return groups_photo_50;
     }
 
-    public String getUsername() {
-        return user_name;
+    public void setGroups_photo_50(String groups_photo_50) {
+        this.groups_photo_50 = groups_photo_50;
     }
 
-    public void setUsername(String user_name) {
-        this.user_name = user_name;
+    public String getLikes() {
+        return likes;
     }
 
-    public void setChatId(String chat_id) {
-        this.chat_id = chat_id;
+    public void setLikes(String likes) {
+        this.likes = likes;
     }
 
-    public String getChannel() {
-        return channel;
+    public String getTag() {
+        return tag;
     }
 
-    public void setChannel(String channel) {
-        this.channel = channel;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTxt() {
+        return txt;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTxt(String txt) {
+        this.txt = txt;
     }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getPostDate() {
-        return postDate;
-    }
-
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
-    }
-
 }

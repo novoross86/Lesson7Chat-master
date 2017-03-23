@@ -39,8 +39,10 @@ public class Main2Activity extends AppCompatActivity {
     private RecyclerView mPostList;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseLike;
+    //2201
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
     private String currentChannel = null;
     private Query mQueryCurrentRequest;
     private boolean mProcessLike = false;
@@ -57,29 +59,30 @@ public class Main2Activity extends AppCompatActivity {
 
 
         // идентификация пользователя
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                if(firebaseAuth.getCurrentUser() == null){
-                    Intent loginIntent = new Intent(Main2Activity.this, ChatRoom.LoginActivity.class);
-                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(loginIntent);
-                }
-            }
-        };
+        //2201
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuthListener = new FirebaseAuth.AuthStateListener(){
+//
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//
+//                if(firebaseAuth.getCurrentUser() == null){
+//                    Intent loginIntent = new Intent(Main2Activity.this, ChatRoom.LoginActivity.class);
+//                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(loginIntent);
+//                }
+//            }
+//        };
 
         //получение данных из активити выбора каналов
         Intent intent = getIntent();
         //получение данных из активити каналов
         int position = intent.getExtras().getInt("newId");
-        //получение данных при возврате из
+        //получение данных при возврате из chatActivity
         currentChannel = intent.getExtras().getString("currentChannel");
 
         mDatabaseLike = FirebaseDatabase.getInstance().getReference().child("Likes");
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Post");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("post");
 
         mDatabaseLike.keepSynced(true);
         mDatabase.keepSynced(true);
@@ -166,7 +169,8 @@ public class Main2Activity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mAuth.addAuthStateListener(mAuthListener);
+        //2201
+        //mAuth.addAuthStateListener(mAuthListener);
 
         FirebaseRecyclerAdapter<Post, Main2Activity.PostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, Main2Activity.PostViewHolder>(
 
@@ -180,26 +184,26 @@ public class Main2Activity extends AppCompatActivity {
             protected void populateViewHolder(Main2Activity.PostViewHolder viewHolder, final Post model, int position) {
 
                 //получение имени пользователя и ид чата для отправки в следующую активити
-                final String newString = model.getChatId();
-                final String user_name = model.getUsername();
-                final String chat_title = model.getTitle();
-                final String post_key = getRef(position).getKey();
+                //final String newString = model.getChatId();
+                //final String user_name = model.getUsername();
+                //final String chat_title = model.getTitle();
+                //final String post_key = getRef(position).getKey();
 
-                viewHolder.setChannel(model.getChannel());
-                viewHolder.setTitle(model.getTitle());
-                viewHolder.setImage(getApplicationContext(), model.getUser_photo());
-                viewHolder.setLikeBtn(post_key);
-                viewHolder.setPostDate(model.getPostDate());
-                viewHolder.setUsername(model.getUsername());
+                viewHolder.setTag(model.getTag());
+                viewHolder.setTxt(model.getTxt());
+                viewHolder.setImage(getApplicationContext(), model.getGroups_photo_50());
+                //viewHolder.setLikeBtn(post_key);
+                //viewHolder.setPostDate(model.getPostDate());
+                viewHolder.setGroups_name(model.getGroups_name());
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         Intent chatRoomIntent = new Intent(Main2Activity.this, ChatRoom.class);
-                        chatRoomIntent.putExtra("chat_name", newString);
-                        chatRoomIntent.putExtra("user_name", user_name);
-                        chatRoomIntent.putExtra("chat_title", chat_title);
+                        //chatRoomIntent.putExtra("chat_name", newString);
+                        //chatRoomIntent.putExtra("user_name", user_name);
+                        //chatRoomIntent.putExtra("chat_title", chat_title);
                         chatRoomIntent.putExtra("currentChannel", currentChannel);
                         startActivity(chatRoomIntent);
 
@@ -211,7 +215,7 @@ public class Main2Activity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        String shareBody = model.getTitle() + ". Приглашаю обсудить на http://uchu24.ru";
+                        String shareBody = model.getTxt() + ". Приглашаю обсудить на http://uchu24.ru";
                         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                         sharingIntent.setType("text/plain");
                         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
@@ -222,46 +226,47 @@ public class Main2Activity extends AppCompatActivity {
                 });
 
                 // установка слушателя на лайк
-                viewHolder.mLikebtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        mProcessLike = true;
-
-                            mDatabaseLike.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                    if(mProcessLike) {
-
-                                        if (dataSnapshot.child(post_key).hasChild(mAuth.getCurrentUser()
-                                                .getUid())) {
-
-                                            mDatabaseLike.child(post_key).child(mAuth
-                                                    .getCurrentUser()
-                                                    .getUid()).removeValue();
-
-                                            mProcessLike = false;
-
-                                        } else {
-
-                                            mDatabaseLike.child(post_key).child(mAuth.getCurrentUser()
-                                                    .getUid()).setValue("RandomValue");
-
-                                            mProcessLike = false;
-
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-
-                    }
-                });
+                //2201
+//                viewHolder.mLikebtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        mProcessLike = true;
+//
+//                            mDatabaseLike.addValueEventListener(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                                    if(mProcessLike) {
+//
+//                                        if (dataSnapshot.child(post_key).hasChild(mAuth.getCurrentUser()
+//                                                .getUid())) {
+//
+//                                            mDatabaseLike.child(post_key).child(mAuth
+//                                                    .getCurrentUser()
+//                                                    .getUid()).removeValue();
+//
+//                                            mProcessLike = false;
+//
+//                                        } else {
+//
+//                                            mDatabaseLike.child(post_key).child(mAuth.getCurrentUser()
+//                                                    .getUid()).setValue("RandomValue");
+//
+//                                            mProcessLike = false;
+//
+//                                        }
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(DatabaseError databaseError) {
+//
+//                                }
+//                            });
+//
+//                    }
+//                });
 
             }
         };
@@ -273,72 +278,79 @@ public class Main2Activity extends AppCompatActivity {
     public static class PostViewHolder extends RecyclerView.ViewHolder{
 
         View mView;
-        ImageButton mLikebtn;
+        //2201
+        // ImageButton mLikebtn;
         ImageButton mSharebtn;
         DatabaseReference mDatabaseLike;
-        FirebaseAuth mAuth;
+        //2201
+        //FirebaseAuth mAuth;
 
         public PostViewHolder(View itemView) {
 
             super(itemView);
             mView = itemView;
 
-            mLikebtn = (ImageButton) mView.findViewById(R.id.likeBtn);
+            //2201
+            //mLikebtn = (ImageButton) mView.findViewById(R.id.likeBtn);
             mSharebtn = (ImageButton) mView.findViewById(R.id.shareBtn);
 
             mDatabaseLike =FirebaseDatabase.getInstance().getReference().child("Likes");
-            mAuth = FirebaseAuth.getInstance();
+
+           // mAuth = FirebaseAuth.getInstance();
 
             mDatabaseLike.keepSynced(true);
         }
 
         //при нажатии лайка
-        public void setLikeBtn(final String post_key){
+//        public void setLikeBtn(final String post_key){
+//
+//           mDatabaseLike.addValueEventListener(new ValueEventListener() {
+//               @Override
+//               public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//
+//                   if(dataSnapshot.child(post_key).hasChild(mAuth.getCurrentUser().getUid())){
+//
+//                     //  mLikebtn.setImageResource(R.mipmap.like_red);
+//
+//                   }else{
+//
+//                      // mLikebtn.setImageResource(R.mipmap.like);
+//
+//                   }
+//
+//               }
+//
+//               @Override
+//               public void onCancelled(DatabaseError databaseError) {
+//
+//               }
+//           });
+//        }
 
-           mDatabaseLike.addValueEventListener(new ValueEventListener() {
-               @Override
-               public void onDataChange(DataSnapshot dataSnapshot) {
 
-                   if(dataSnapshot.child(post_key).hasChild(mAuth.getCurrentUser().getUid())){
-
-                       mLikebtn.setImageResource(R.mipmap.like_red);
-
-                   }else{
-
-                       mLikebtn.setImageResource(R.mipmap.like);
-
-                   }
-
-               }
-
-               @Override
-               public void onCancelled(DatabaseError databaseError) {
-
-               }
-           });
-        }
         //2101
-        public void setUsername(String user_name){
-            TextView post_user_name = (TextView)mView.findViewById(R.id.user_name);
-            post_user_name.setText(user_name);
+        public void setGroups_name(String groups_name){
+            TextView post_group_name = (TextView)mView.findViewById(R.id.user_name);
+            post_group_name.setText(groups_name);
         }
 
-        public void setChannel(String channel){
+        public void setTag(String tag){
 
-            TextView post_channel = (TextView)mView.findViewById(R.id.channel_title);
-            post_channel.setText(channel);
+            TextView post_tag = (TextView)mView.findViewById(R.id.channel_title);
+            post_tag.setText(tag);
         }
 
-        public void setTitle(String title){
+        public void setTxt(String txt){
 
-            TextView post_title = (TextView)mView.findViewById(R.id.post_title);
-            post_title.setText(title);
+            TextView post_txt = (TextView)mView.findViewById(R.id.post_title);
+            post_txt.setText(txt);
 
         }
 
-        public void setImage(Context ctx, String image){
-            ImageView post_image = (ImageView)mView.findViewById(R.id.imagePost);
-            Picasso.with(ctx).load(image).into(post_image);
+        public void setImage(Context ctx, String groups_photo_50){
+            ImageView post_groups_photo_50 = (ImageView)mView.findViewById(R.id.imagePost);
+            Picasso.with(ctx).load(groups_photo_50).into(post_groups_photo_50);
         }
 
         public void setPostDate(String postDate){
@@ -393,6 +405,8 @@ public class Main2Activity extends AppCompatActivity {
 
     private void logout(){
 
+        //2201
+        //logout
         mAuth.signOut();
 
     }

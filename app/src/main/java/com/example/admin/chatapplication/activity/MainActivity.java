@@ -16,8 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends Activity {
 
         private TextView mSelectText;
-        private FirebaseAuth mAuth;
-        private FirebaseAuth.AuthStateListener mAuthListener;
+        //2201
+        //private FirebaseAuth mAuth;
+        //private FirebaseAuth.AuthStateListener mAuthListener;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -25,19 +26,20 @@ public class MainActivity extends Activity {
             setContentView(R.layout.activity_main);
 
             // идентификация пользователя
-            mAuth = FirebaseAuth.getInstance();
-            mAuthListener = new FirebaseAuth.AuthStateListener(){
-
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                    if(firebaseAuth.getCurrentUser() == null){
-                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(loginIntent);
-                    }
-                }
-            };
+            //2201
+//            mAuth = FirebaseAuth.getInstance();
+//            mAuthListener = new FirebaseAuth.AuthStateListener(){
+//
+//                @Override
+//                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//
+//                    if(firebaseAuth.getCurrentUser() == null){
+//                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+//                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(loginIntent);
+//                    }
+//                }
+//            };
 
 
             mSelectText = (TextView) findViewById(R.id.info);
@@ -66,7 +68,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart(){
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        //2201
+        //mAuth.addAuthStateListener(mAuthListener);
     }
 
     }

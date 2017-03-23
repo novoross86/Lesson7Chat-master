@@ -40,7 +40,10 @@ public class ChatRoom extends AppCompatActivity {
     private Button btn_send_msg;
     private EditText input_msg;
     private String temp_key;
+    //переменные для аутентификации
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
     private RecyclerView mRecyclerView;
     private DatabaseReference root;
     private DatabaseReference mDatabaseUsers;
@@ -55,13 +58,18 @@ public class ChatRoom extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
-        mAuth = FirebaseAuth.getInstance();
-        final String newUser = mAuth.getCurrentUser().getUid();
+
+        //2201
+        //mAuth = FirebaseAuth.getInstance();
+        //выскакивает ошибка
+        //final String newUser = mAuth.getCurrentUser().getUid();
 
         btn_send_msg = (Button)findViewById(R.id.SendChatMsg);
         input_msg = (EditText)findViewById(R.id.editTextMsg);
 
-        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(newUser);
+        //2201
+
+        //mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(newUser);
 
         mRecyclerView = (RecyclerView)findViewById(R.id.rv);
         mRecyclerView.setHasFixedSize(true);
@@ -70,7 +78,9 @@ public class ChatRoom extends AppCompatActivity {
         //Storage reference
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
+        //2201
         final String user_name = getIntent().getExtras().getString("user_name");
+
         final String chat_name = getIntent().getExtras().getString("chat_name");
         final String chat_title = getIntent().getExtras().getString("chat_title");
         currentChannel = getIntent().getExtras().getString("currentChannel");
@@ -87,25 +97,27 @@ public class ChatRoom extends AppCompatActivity {
         root = FirebaseDatabase.getInstance().getReference().child("Chat").child(currentChannel).child(chat_name);
 
         // получаем картинку пользователя
-        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //15.01
-                //проверка есть ли у пользователя аватар
-                    if(dataSnapshot.child("image").getValue() == null){
-                        userNewImage = defaultImage;
-                    } else {
-                        userNewImage = dataSnapshot.child("image").getValue().toString();
-                    }
-
-                userNewName = dataSnapshot.child("name").getValue().toString();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        //2201
+        // выскакивает ошибка
+//        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                //15.01
+//                //проверка есть ли у пользователя аватар
+//                    if(dataSnapshot.child("image").getValue() == null){
+//                        userNewImage = defaultImage;
+//                    } else {
+//                        userNewImage = dataSnapshot.child("image").getValue().toString();
+//                    }
+//
+//                userNewName = dataSnapshot.child("name").getValue().toString();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Massege, MassegeViewHolder>(
                 Massege.class,
@@ -144,6 +156,24 @@ public class ChatRoom extends AppCompatActivity {
         btn_send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //2201
+                //авторизация если пользователь жмет кнопку отправить
+                mAuth = FirebaseAuth.getInstance();
+                mAuthListener = new FirebaseAuth.AuthStateListener(){
+
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                    if(firebaseAuth.getCurrentUser() == null){
+                        Intent loginIntent = new Intent(ChatRoom.this, LoginActivity.class);
+                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(loginIntent);
+                    }
+                }
+            };
+
+                mAuth.addAuthStateListener(mAuthListener);
 
                 Map<String,Object>map = new HashMap<String, Object>();
                 temp_key = root.push().getKey();
