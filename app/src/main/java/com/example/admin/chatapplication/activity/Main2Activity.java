@@ -33,6 +33,8 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -60,19 +62,19 @@ public class Main2Activity extends AppCompatActivity {
 
         // идентификация пользователя
         //2201
-//        mAuth = FirebaseAuth.getInstance();
-//        mAuthListener = new FirebaseAuth.AuthStateListener(){
-//
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener(){
+
+            @Override
+           public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 //
 //                if(firebaseAuth.getCurrentUser() == null){
 //                    Intent loginIntent = new Intent(Main2Activity.this, ChatRoom.LoginActivity.class);
 //                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    startActivity(loginIntent);
-//                }
+                }
 //            }
-//        };
+        };
 
         //получение данных из активити выбора каналов
         Intent intent = getIntent();
@@ -84,6 +86,8 @@ public class Main2Activity extends AppCompatActivity {
         mDatabaseLike = FirebaseDatabase.getInstance().getReference().child("Likes");
         mDatabase = FirebaseDatabase.getInstance().getReference().child("post");
 
+
+
         mDatabaseLike.keepSynced(true);
         mDatabase.keepSynced(true);
 
@@ -94,34 +98,34 @@ public class Main2Activity extends AppCompatActivity {
                     currentChannel = "ОРТ";
                     break;
                 case 1:
-                    currentChannel = "Россия1";
+                    currentChannel = "championat";
                     break;
                 case 2:
-                    currentChannel = "ТНТ";
+                    currentChannel = "exponentafilm";
                     break;
                 case 3:
-                    currentChannel = "НТВ";
+                    currentChannel = "1tv";
                     break;
                 case 4:
-                    currentChannel = "СТС";
+                    currentChannel = "ctc";
                     break;
                 case 5:
-                    currentChannel = "ТВЦ";
+                    currentChannel = "muztv";
                     break;
                 case 6:
-                    currentChannel = "Рентв";
+                    currentChannel = "nrj";
                     break;
                 case 7:
-                    currentChannel = "5 канал";
+                    currentChannel = "rt_russian";
                     break;
                 case 8:
-                    currentChannel = "Россия 24";
+                    currentChannel = "интересное";
                     break;
                 case 9:
-                    currentChannel = "ТВ3";
+                    currentChannel = "не интересное";
                     break;
                 case 10:
-                    currentChannel = "Домашний";
+                    currentChannel = "очень интересное";
                     break;
                 case 11:
                     currentChannel = "2x2";
@@ -170,7 +174,7 @@ public class Main2Activity extends AppCompatActivity {
         super.onStart();
 
         //2201
-        //mAuth.addAuthStateListener(mAuthListener);
+        mAuth.addAuthStateListener(mAuthListener);
 
         FirebaseRecyclerAdapter<Post, Main2Activity.PostViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, Main2Activity.PostViewHolder>(
 
@@ -182,18 +186,27 @@ public class Main2Activity extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(Main2Activity.PostViewHolder viewHolder, final Post model, int position) {
-
+                //2103
                 //получение имени пользователя и ид чата для отправки в следующую активити
-                //final String newString = model.getChatId();
+                //final String newString = model.;
                 //final String user_name = model.getUsername();
-                //final String chat_title = model.getTitle();
-                //final String post_key = getRef(position).getKey();
+                final String chat_title = model.getTxt();
+                //получение ид текущей позиции
+                final String post_key = getRef(position).getKey();
 
                 viewHolder.setTag(model.getTag());
                 viewHolder.setTxt(model.getTxt());
                 viewHolder.setImage(getApplicationContext(), model.getGroups_photo_50());
+                //временно отключено
                 //viewHolder.setLikeBtn(post_key);
-                //viewHolder.setPostDate(model.getPostDate());
+
+                //преобразования даты из временой метки в читаемый вид
+                //в базе дата хранится в формате timestamp
+                SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+                Long number_date = Long.valueOf(model.getDate());
+                String dateString = sdf.format(number_date);
+                viewHolder.setDate(dateString);
+
                 viewHolder.setGroups_name(model.getGroups_name());
 
                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -201,9 +214,10 @@ public class Main2Activity extends AppCompatActivity {
                     public void onClick(View view) {
 
                         Intent chatRoomIntent = new Intent(Main2Activity.this, ChatRoom.class);
-                        //chatRoomIntent.putExtra("chat_name", newString);
+                        //получение ид чата
+                        chatRoomIntent.putExtra("chat_name", post_key);
                         //chatRoomIntent.putExtra("user_name", user_name);
-                        //chatRoomIntent.putExtra("chat_title", chat_title);
+                        chatRoomIntent.putExtra("chat_title", chat_title);
                         chatRoomIntent.putExtra("currentChannel", currentChannel);
                         startActivity(chatRoomIntent);
 
@@ -353,10 +367,11 @@ public class Main2Activity extends AppCompatActivity {
             Picasso.with(ctx).load(groups_photo_50).into(post_groups_photo_50);
         }
 
-        public void setPostDate(String postDate){
+        public void setDate(String date){
             TextView post_date = (TextView)mView.findViewById(R.id.postDate);
-            post_date.setText(postDate);
+            post_date.setText(date);
         }
+
     }
 
     @Override
@@ -381,7 +396,10 @@ public class Main2Activity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.action_logout){
 
-            logout();
+            //logout();
+            FirebaseAuth mAuth;
+            startActivity(new Intent(Main2Activity.this, LoginActivity.class ));
+
 
         }
 

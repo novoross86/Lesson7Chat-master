@@ -80,7 +80,6 @@ public class ChatRoom extends AppCompatActivity {
 
         //2201
         final String user_name = getIntent().getExtras().getString("user_name");
-
         final String chat_name = getIntent().getExtras().getString("chat_name");
         final String chat_title = getIntent().getExtras().getString("chat_title");
         currentChannel = getIntent().getExtras().getString("currentChannel");
@@ -94,7 +93,7 @@ public class ChatRoom extends AppCompatActivity {
 
         //090117
         //root = FirebaseDatabase.getInstance().getReference().child("Chat").child(chat_name);
-        root = FirebaseDatabase.getInstance().getReference().child("Chat").child(currentChannel).child(chat_name);
+        root = FirebaseDatabase.getInstance().getReference().child("comments").child(currentChannel).child(chat_name);
 
         // получаем картинку пользователя
         //2201
@@ -128,9 +127,9 @@ public class ChatRoom extends AppCompatActivity {
             @Override
             protected void populateViewHolder(MassegeViewHolder viewHolder, Massege model, int position) {
 
-                viewHolder.setName(model.getName());
-                viewHolder.setMsg(model.getMsg());
-                viewHolder.setImage(getApplicationContext(), model.getImage());
+                viewHolder.setT_profile_fullname(model.getT_profile_fullname());
+                viewHolder.setTxt(model.getTxt());
+                viewHolder.setT_profile_photo_50(getApplicationContext(), model.getT_profile_photo_50());
             }
         };
 
@@ -181,9 +180,9 @@ public class ChatRoom extends AppCompatActivity {
 
                 DatabaseReference message_root = root.child(temp_key);
                 Map<String, Object> map2 = new HashMap<String, Object>();
-                map2.put("name",userNewName);
-                map2.put("msg",input_msg.getText().toString());
-                map2.put("image", userNewImage);
+                map2.put("t_profile_fullname",userNewName);
+                map2.put("txt",input_msg.getText().toString());
+                map2.put("t_profile_photo_50", userNewImage);
 
                 message_root.updateChildren(map2);
 
@@ -203,19 +202,19 @@ public class ChatRoom extends AppCompatActivity {
             nView = itemView;
         }
 
-        public void setName(String name){
+        public void setT_profile_fullname(String t_profile_fullname){
             TextView massege_name = (TextView)nView.findViewById(R.id.massege_name);
-            massege_name.setText(name);
+            massege_name.setText(t_profile_fullname);
         }
 
-        public void setMsg(String msg){
+        public void setTxt(String txt){
             TextView massege_msg = (TextView)nView.findViewById(R.id.massege_text);
-            massege_msg.setText(msg);
+            massege_msg.setText(txt);
         }
 
-        public void setImage(Context ctx, String image){
+        public void setT_profile_photo_50(Context ctx, String t_profile_photo_50){
             ImageView post_image = (ImageView)nView.findViewById(R.id.userImage);
-            Picasso.with(ctx).load(image).into(post_image);
+            Picasso.with(ctx).load(t_profile_photo_50).into(post_image);
         }
     }
 

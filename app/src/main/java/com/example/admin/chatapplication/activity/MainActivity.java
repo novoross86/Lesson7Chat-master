@@ -17,8 +17,8 @@ public class MainActivity extends Activity {
 
         private TextView mSelectText;
         //2201
-        //private FirebaseAuth mAuth;
-        //private FirebaseAuth.AuthStateListener mAuthListener;
+        private FirebaseAuth mAuth;
+        private FirebaseAuth.AuthStateListener mAuthListener;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -27,19 +27,19 @@ public class MainActivity extends Activity {
 
             // идентификация пользователя
             //2201
-//            mAuth = FirebaseAuth.getInstance();
-//            mAuthListener = new FirebaseAuth.AuthStateListener(){
+            mAuth = FirebaseAuth.getInstance();
+            mAuthListener = new FirebaseAuth.AuthStateListener(){
 //
-//                @Override
-//                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 //
 //                    if(firebaseAuth.getCurrentUser() == null){
 //                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
 //                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                        startActivity(loginIntent);
 //                    }
-//                }
-//            };
+               }
+            };
 
 
             mSelectText = (TextView) findViewById(R.id.info);
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
     protected void onStart(){
         super.onStart();
         //2201
-        //mAuth.addAuthStateListener(mAuthListener);
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     }

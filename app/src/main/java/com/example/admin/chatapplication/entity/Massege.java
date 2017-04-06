@@ -2,42 +2,42 @@ package com.example.admin.chatapplication.entity;
 
 public class Massege {
 
-    private String name;
-    private String msg;
-    private String image;
+    private String t_profile_fullname;
+    private String txt;
+    private String t_profile_photo_50;
 
 
 
-    public Massege(String name, String msg, String image){
-        this.name = name;
-        this.msg = msg;
-        this.image = image;
+    public Massege(String t_profile_fullname, String txt, String t_profile_photo_50){
+        this.t_profile_fullname = t_profile_fullname;
+        this.txt = txt;
+        this.t_profile_photo_50 = t_profile_photo_50;
 
     }
 
     public Massege(){}
 
-    public String getName() {
-        return name;
+    public String getT_profile_fullname() {
+        return t_profile_fullname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setT_profile_fullname(String t_profile_fullname) {
+        this.t_profile_fullname = t_profile_fullname;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getTxt() {
+        return txt;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setTxt(String txt) {
+        this.txt = txt;
     }
 
-    public String getImage() {
-        return image;
+    public String getT_profile_photo_50() {
+        return t_profile_photo_50;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setT_profile_photo_50(String t_profile_photo_50) {
+        this.t_profile_photo_50 = t_profile_photo_50;
     }
 }

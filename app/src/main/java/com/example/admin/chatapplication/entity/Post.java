@@ -3,15 +3,19 @@ package com.example.admin.chatapplication.entity;
 
 public class Post {
 
-    private String comments, groups_name, groups_photo_50, likes, tag, txt;
+    private String comments, groups_name, groups_photo_50, likes, tag, txt, date;
+
+
 
     public Post(String comments, String groups_name, String groups_photo_50, String likes,
-                String txt) {
+                String txt, String date) {
         this.comments = comments;
         this.groups_name = groups_name;
         this.groups_photo_50 = groups_photo_50;
         this.likes = likes;
         this.txt = txt;
+        this.date = date;
+
     }
 
     public Post() {
@@ -63,5 +67,13 @@ public class Post {
 
     public void setTxt(String txt) {
         this.txt = txt;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
