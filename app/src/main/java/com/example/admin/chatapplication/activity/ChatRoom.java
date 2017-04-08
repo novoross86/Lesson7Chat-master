@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,42 +36,37 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.text.TextUtils.isEmpty;
+
 public class ChatRoom extends AppCompatActivity {
 
     private Button btn_send_msg;
     private EditText input_msg;
     private String temp_key;
+
     //переменные для аутентификации
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private RecyclerView mRecyclerView;
     private DatabaseReference root;
-    private DatabaseReference mDatabaseUsers;
     private LinearLayoutManager mLinearLayoutManager;
     private FirebaseRecyclerAdapter<Massege, MassegeViewHolder> mFirebaseAdapter;
     private String userNewImage, userNewName, chatTitle;
     private String currentChannel;
     private String defaultImage= "https://firebasestorage.googleapis.com/v0/b/chatapplication-7aeb9.appspot.com/o/Profile_image%2Fimage_user.png?alt=media&token=ce12634c-b618-44e5-890b-67fd9211fe8e";
     private StorageReference mStorageRef;
+    private String сUser;
+    private DatabaseReference mCurentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
-        //2201
-        //mAuth = FirebaseAuth.getInstance();
-        //выскакивает ошибка
-        //final String newUser = mAuth.getCurrentUser().getUid();
-
         btn_send_msg = (Button)findViewById(R.id.SendChatMsg);
         input_msg = (EditText)findViewById(R.id.editTextMsg);
-
-        //2201
-
-        //mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(newUser);
-
         mRecyclerView = (RecyclerView)findViewById(R.id.rv);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,38 +81,54 @@ public class ChatRoom extends AppCompatActivity {
         currentChannel = getIntent().getExtras().getString("currentChannel");
 
 
+        //авторизация если пользователь жмет кнопку отправить
+        mAuth = FirebaseAuth.getInstance();
+
+        //получение объекта пользователя если он есть
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //проветка авторизирован ли пользователь
+        if (user != null) {
+
+            // получение id пользователя
+            сUser = mAuth.getCurrentUser().getUid();
+
+            //получение ссылки на пользователя
+            mCurentUser = FirebaseDatabase.getInstance().getReference().child("Users").child(сUser);
+
+            mCurentUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //15.01
+                    //проверка есть ли у пользователя аватар
+                    if (dataSnapshot.child("image").getValue() == null) {
+                        userNewImage = defaultImage;
+                    } else {
+                        userNewImage = dataSnapshot.child("image").getValue().toString();
+                    }
+
+                    userNewName = dataSnapshot.child("name").getValue().toString();
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
         //инициализация linetLayoutManeger
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
 
+        //установка заголовка страницы
         setTitle(chat_title);
 
         //090117
-        //root = FirebaseDatabase.getInstance().getReference().child("Chat").child(chat_name);
         root = FirebaseDatabase.getInstance().getReference().child("comments").child(currentChannel).child(chat_name);
 
-        // получаем картинку пользователя
-        //2201
-        // выскакивает ошибка
-//        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                //15.01
-//                //проверка есть ли у пользователя аватар
-//                    if(dataSnapshot.child("image").getValue() == null){
-//                        userNewImage = defaultImage;
-//                    } else {
-//                        userNewImage = dataSnapshot.child("image").getValue().toString();
-//                    }
-//
-//                userNewName = dataSnapshot.child("name").getValue().toString();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Massege, MassegeViewHolder>(
                 Massege.class,
@@ -153,12 +165,10 @@ public class ChatRoom extends AppCompatActivity {
 
         //отправка сообщения
         btn_send_msg.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
-                //2201
-                //авторизация если пользователь жмет кнопку отправить
-                mAuth = FirebaseAuth.getInstance();
                 mAuthListener = new FirebaseAuth.AuthStateListener(){
 
                 @Override
@@ -174,19 +184,18 @@ public class ChatRoom extends AppCompatActivity {
 
                 mAuth.addAuthStateListener(mAuthListener);
 
-                Map<String,Object>map = new HashMap<String, Object>();
-                temp_key = root.push().getKey();
-                root.updateChildren(map);
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    temp_key = root.push().getKey();
+                    root.updateChildren(map);
+                    DatabaseReference message_root = root.child(temp_key);
+                    Map<String, Object> map2 = new HashMap<String, Object>();
+                    map2.put("t_profile_fullname", userNewName);
+                    map2.put("txt", input_msg.getText().toString());
+                    map2.put("t_profile_photo_50", userNewImage);
 
-                DatabaseReference message_root = root.child(temp_key);
-                Map<String, Object> map2 = new HashMap<String, Object>();
-                map2.put("t_profile_fullname",userNewName);
-                map2.put("txt",input_msg.getText().toString());
-                map2.put("t_profile_photo_50", userNewImage);
+                    message_root.updateChildren(map2);
 
-                message_root.updateChildren(map2);
-
-                input_msg.setText("");
+                    input_msg.setText("");
 
             }
         });
@@ -269,7 +278,7 @@ public class ChatRoom extends AppCompatActivity {
             String email = mLoginEmailField.getText().toString().trim();
             String password = mLoginPasswordField.getText().toString().trim();
 
-            if(!TextUtils.isEmpty(email)&&!TextUtils.isEmpty(password)){
+            if(!isEmpty(email)&&!isEmpty(password)){
 
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
