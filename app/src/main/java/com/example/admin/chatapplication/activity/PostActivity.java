@@ -29,13 +29,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.security.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class PostActivity extends AppCompatActivity{
 
     private EditText mPostTitle;
-    private EditText mPostDesc;
-    private Spinner mPostChannel;
     private DatabaseReference mDatabase;
     private DatabaseReference chDatabase;
     private FirebaseAuth mAuth;
@@ -46,7 +49,7 @@ public class PostActivity extends AppCompatActivity{
     private static final int GALLERY_REQUEST = 1;
     private Uri mImageUri = null;
     private ProgressDialog mProgress;
-    private String currentChannel;  //переменная хранит канал из которого пользователь перешел
+    private String currentChannel, postKey;  //переменная хранит канал из которого пользователь перешел
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +66,15 @@ public class PostActivity extends AppCompatActivity{
                 .child("Users").child(mCurrentUer.getUid());
 
         mPostTitle = (EditText)findViewById(R.id.mPostTitle);
-       // mPostDesc = (EditText)findViewById(R.id.mPostDesc);
-        mPostChannel = (Spinner)findViewById(R.id.mSp);
-        //mSubmitBtn = (Button)findViewById(R.id.mBtn);
         mSelectImage = (ImageButton)findViewById(R.id.imageButton1);
         mStorage = FirebaseStorage.getInstance().getReference();
 
         //получение данных из какой активити мы пришли
         Intent intentActivity = getIntent();
         currentChannel = intentActivity.getExtras().getString("currentChannel");
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(currentChannel);
 
 
         mProgress = new ProgressDialog(this);
@@ -93,7 +96,7 @@ public class PostActivity extends AppCompatActivity{
         mProgress.show();
 
         final String title_val = mPostTitle.getText().toString().trim();
-        final String channel_val = mPostChannel.getSelectedItem().toString().trim();
+        final String channel_val = currentChannel;
 
 
 //        if(!TextUtils.isEmpty(title_val) && !TextUtils.isEmpty(channel_val)){
@@ -166,44 +169,50 @@ public class PostActivity extends AppCompatActivity{
         //else
             if(!TextUtils.isEmpty(title_val) && !TextUtils.isEmpty(channel_val)) {
 
-            //090117
+            //создание ид поста
             final DatabaseReference newPost = mDatabase.child(currentChannel).push();
+
+            //получение ид поста
+            postKey = newPost.getKey();
+
             // получение идентификатора пользователя
             final String newName = mCurrentUer.getUid();
-            // получение уникальной строки для названия чата
-            //final String chatName = channel_val + title_val + newName;
-            final String chatName = title_val + newName;
-            // устанавливаем название уникальной строки
-            //090117
-            final DatabaseReference newChat = chDatabase.child(currentChannel).child(chatName).push();
+
+            //ид для чата
+//            final String chatName = title_val + newName;
+
+            //создание ид чата и ид комментария
+            final DatabaseReference newChat = chDatabase.child(currentChannel).child(postKey).push();
 
             mDatabaseUser.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     final String user_name = dataSnapshot.child("name").getValue().toString();
+
                     //создание ид в чатах
                     newChat.child("txt").setValue(title_val);
                     newChat.child("t_profile_fullname").setValue(user_name);
                     newChat.child("t_profile_photo_50").setValue(dataSnapshot.child("image").getValue());
                     //2101
-                    //newPost.child("channel").setValue(currentChannel);
                     newPost.child("comments").setValue("1");
                     newPost.child("groups_name").setValue(dataSnapshot.child("name").getValue());
                     newPost.child("groups_photo_50").setValue(dataSnapshot.child("image").getValue());
-                    newPost.child("likes").setValue("0");
+                    newPost.child("likes").setValue("1");
                     newPost.child("txt").setValue(title_val);
+                    newPost.child("comments").setValue("1");
+
                     //получение даты и времени
-                    long date = System.currentTimeMillis();
-                    SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
-                    String dateString = sdf.format(date);
-                    newPost.child("postDate").setValue(dateString);
+                    Long tsLong = System.currentTimeMillis()/1000;
+                    String dateString = tsLong.toString();
+
+                    newPost.child("date").setValue(dateString);
 
                     mProgress.dismiss();
 
                     Intent chatRoomIntent = new Intent(PostActivity.this, ChatRoom.class);
                     chatRoomIntent.putExtra("user_name", user_name);
-                    chatRoomIntent.putExtra("chat_name", chatName);
+                    chatRoomIntent.putExtra("chat_name", postKey);
                     chatRoomIntent.putExtra("chat_title", title_val);
                     chatRoomIntent.putExtra("currentChannel", currentChannel);
                     startActivity(chatRoomIntent);

@@ -23,6 +23,7 @@ import com.example.admin.chatapplication.R;
 import com.example.admin.chatapplication.entity.Post;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +34,11 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 
 public class Main2Activity extends AppCompatActivity {
@@ -95,7 +100,7 @@ public class Main2Activity extends AppCompatActivity {
         if(currentChannel == null) {
             switch (position) {
                 case 0:
-                    currentChannel = "1tv";
+                    currentChannel = "rt_russian";
                     break;
                 case 1:
                     currentChannel = "ctc";
@@ -202,9 +207,21 @@ public class Main2Activity extends AppCompatActivity {
 
                 //преобразования даты из временой метки в читаемый вид
                 //в базе дата хранится в формате timestamp
-                SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+//                    Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+//                    DateFormat formatter = new SimpleDateFormat("HH:mm");
+//                    formatter.setTimeZone(TimeZone.getTimeZone("GMT+3"));
+//                    String dateString = formatter.format(model.getDate());
+
+
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                //sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
                 Long number_date = Long.valueOf(model.getDate());
                 String dateString = sdf.format(number_date);
+
+//                SimpleDateFormat sdfAmerica = new SimpleDateFormat("HH:mm");
+//                sdfAmerica.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+//                String dateString = sdfAmerica.format(model.getDate());
+
                 viewHolder.setDate(dateString);
 
                 viewHolder.setGroups_name(model.getGroups_name());
@@ -386,11 +403,23 @@ public class Main2Activity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.action_add){
 
-            startActivity(new Intent(Main2Activity.this, PostActivity.class ));
-            Intent newPostIntent = new Intent(Main2Activity.this,
-                    PostActivity.class);
-            newPostIntent.putExtra("currentChannel", currentChannel);
-            startActivity(newPostIntent);
+            //авторизация если пользователь жмет кнопку отправить
+            mAuth = FirebaseAuth.getInstance();
+
+            //получение объекта пользователя если он есть
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            //проветка авторизирован ли пользователь
+            if (user != null) {
+
+//                startActivity(new Intent(Main2Activity.this, PostActivity.class));
+                Intent newPostIntent = new Intent(Main2Activity.this,
+                        PostActivity.class);
+                newPostIntent.putExtra("currentChannel", currentChannel);
+                startActivity(newPostIntent);
+            }else{
+                startActivity(new Intent(Main2Activity.this, LoginActivity.class));
+            }
 
         }
 

@@ -10,11 +10,11 @@
 
     <string-array name="catlist">
         <item>ОРТ</item>
-        <item>Россия1</item>
-        <item>ТНТ</item>
-        <item>НТВ</item>
-        <item>СТС</item>
-        <item>ТВЦ</item>
+        <item>интересное</item>
+        <item>не интересное</item>
+        <item>очень интересно</item>
+        <item>championat</item>
+        <item>exponentafilm</item>
         <item>Рентв</item>
         <item>5 канал</item>
         <item>Россия 24</item>

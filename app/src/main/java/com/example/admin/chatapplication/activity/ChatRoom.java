@@ -52,10 +52,9 @@ public class ChatRoom extends AppCompatActivity {
     private DatabaseReference root;
     private LinearLayoutManager mLinearLayoutManager;
     private FirebaseRecyclerAdapter<Massege, MassegeViewHolder> mFirebaseAdapter;
-    private String userNewImage, userNewName, chatTitle;
+    private String userNewImage, userNewName;
     private String currentChannel;
     private String defaultImage= "https://firebasestorage.googleapis.com/v0/b/chatapplication-7aeb9.appspot.com/o/Profile_image%2Fimage_user.png?alt=media&token=ce12634c-b618-44e5-890b-67fd9211fe8e";
-    private StorageReference mStorageRef;
     private String сUser;
     private DatabaseReference mCurentUser;
 
@@ -71,11 +70,8 @@ public class ChatRoom extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //Storage reference
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-
         //2201
-        final String user_name = getIntent().getExtras().getString("user_name");
+//      final String user_name = getIntent().getExtras().getString("user_name");
         final String chat_name = getIntent().getExtras().getString("chat_name");
         final String chat_title = getIntent().getExtras().getString("chat_title");
         currentChannel = getIntent().getExtras().getString("currentChannel");
