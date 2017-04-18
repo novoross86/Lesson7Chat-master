@@ -100,16 +100,16 @@ public class Main2Activity extends AppCompatActivity {
         if(currentChannel == null) {
             switch (position) {
                 case 0:
-                    currentChannel = "rt_russian";
+                    currentChannel = "1tv";
                     break;
                 case 1:
-                    currentChannel = "ctc";
+                    currentChannel = "championat";
                     break;
                 case 2:
-                    currentChannel = "europaplus";
+                    currentChannel = "ctc";
                     break;
                 case 3:
-                    currentChannel = "exponentafilm";
+                    currentChannel = "europaplus";
                     break;
                 case 4:
                     currentChannel = "fhr";

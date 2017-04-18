@@ -9,13 +9,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.admin.chatapplication.activity.ChatRoom">
 
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/rv"
+        android:layout_alignStart="@+id/rv" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/textTitle"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="5dp"
+        android:clipToPadding="false" />
 
     <LinearLayout
         android:orientation="horizontal"

@@ -43,6 +43,7 @@ public class ChatRoom extends AppCompatActivity {
     private Button btn_send_msg;
     private EditText input_msg;
     private String temp_key;
+    private TextView textTitle;
 
     //переменные для аутентификации
     private FirebaseAuth mAuth;
@@ -67,6 +68,8 @@ public class ChatRoom extends AppCompatActivity {
         btn_send_msg = (Button)findViewById(R.id.SendChatMsg);
         input_msg = (EditText)findViewById(R.id.editTextMsg);
         mRecyclerView = (RecyclerView)findViewById(R.id.rv);
+        textTitle = (TextView)findViewById(R.id.textTitle);
+
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -74,8 +77,11 @@ public class ChatRoom extends AppCompatActivity {
 //      final String user_name = getIntent().getExtras().getString("user_name");
         final String chat_name = getIntent().getExtras().getString("chat_name");
         final String chat_title = getIntent().getExtras().getString("chat_title");
+
         currentChannel = getIntent().getExtras().getString("currentChannel");
 
+        //установка темы
+        textTitle.setText(chat_title);
 
         //авторизация если пользователь жмет кнопку отправить
         mAuth = FirebaseAuth.getInstance();
@@ -120,7 +126,7 @@ public class ChatRoom extends AppCompatActivity {
         mLinearLayoutManager.setStackFromEnd(true);
 
         //установка заголовка страницы
-        setTitle(chat_title);
+        setTitle(currentChannel);
 
         //090117
         root = FirebaseDatabase.getInstance().getReference().child("comments").child(currentChannel).child(chat_name);
