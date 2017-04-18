@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
 
             // идентификация пользователя
             //2201
+            //
             mAuth = FirebaseAuth.getInstance();
             mAuthListener = new FirebaseAuth.AuthStateListener(){
 //
