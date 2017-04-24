@@ -74,8 +74,6 @@ public class ChatRoom extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //2201
-//      final String user_name = getIntent().getExtras().getString("user_name");
         final String chat_name = getIntent().getExtras().getString("chat_name");
         final String chat_title = getIntent().getExtras().getString("chat_title");
 
@@ -145,6 +143,7 @@ public class ChatRoom extends AppCompatActivity {
                 viewHolder.setT_profile_fullname(model.getT_profile_fullname());
                 viewHolder.setTxt(model.getTxt());
                 viewHolder.setT_profile_photo_50(getApplicationContext(), model.getT_profile_photo_50());
+                viewHolder.setT_photo_photo_130(getApplicationContext(), model.getT_photo_photo_130());
             }
         };
 
@@ -227,6 +226,11 @@ public class ChatRoom extends AppCompatActivity {
         public void setT_profile_photo_50(Context ctx, String t_profile_photo_50){
             ImageView post_image = (ImageView)nView.findViewById(R.id.userImage);
             Picasso.with(ctx).load(t_profile_photo_50).into(post_image);
+        }
+
+        public void setT_photo_photo_130(Context ctx, String t_photo_photo_130){
+            ImageView post_2image = (ImageView) itemView.findViewById(R.id.imageView);
+            Picasso.with(ctx).load(t_photo_photo_130).into(post_2image);
         }
     }
 

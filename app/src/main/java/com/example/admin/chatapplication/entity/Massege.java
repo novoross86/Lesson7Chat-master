@@ -5,13 +5,23 @@ public class Massege {
     private String t_profile_fullname;
     private String txt;
     private String t_profile_photo_50;
+    private String t_photo_photo_130;
 
 
+    public String getT_photo_photo_130() {
+        return t_photo_photo_130;
+    }
 
-    public Massege(String t_profile_fullname, String txt, String t_profile_photo_50){
+    public void setT_photo_photo_130(String t_photo_photo_130) {
+        this.t_photo_photo_130 = t_photo_photo_130;
+    }
+
+    public Massege(String t_profile_fullname, String txt, String t_profile_photo_50, String t_photo_photo_130){
         this.t_profile_fullname = t_profile_fullname;
         this.txt = txt;
         this.t_profile_photo_50 = t_profile_photo_50;
+        this.t_photo_photo_130 = t_photo_photo_130;
+
 
     }
 
