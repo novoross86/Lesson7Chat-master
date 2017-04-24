@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ import static android.text.TextUtils.isEmpty;
 
 public class ChatRoom extends AppCompatActivity {
 
-    private Button btn_send_msg;
+    private ImageButton btn_send_msg;
     private EditText input_msg;
     private String temp_key;
     private TextView textTitle;
@@ -65,7 +66,7 @@ public class ChatRoom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
-        btn_send_msg = (Button)findViewById(R.id.SendChatMsg);
+        btn_send_msg = (ImageButton)findViewById(R.id.SendChatMsg);
         input_msg = (EditText)findViewById(R.id.editTextMsg);
         mRecyclerView = (RecyclerView)findViewById(R.id.rv);
         textTitle = (TextView)findViewById(R.id.textTitle);
