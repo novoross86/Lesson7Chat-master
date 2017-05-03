@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -29,9 +28,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -129,13 +127,14 @@ public class ChatRoom extends AppCompatActivity {
 
         //090117
         root = FirebaseDatabase.getInstance().getReference().child("comments").child(currentChannel).child(chat_name);
+        Query root1 = FirebaseDatabase.getInstance().getReference().child("comments").child(currentChannel).child(chat_name).limitToLast(30);
 
 
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Massege, MassegeViewHolder>(
                 Massege.class,
                 R.layout.massege_row,
                 MassegeViewHolder.class,
-                root
+                root1
         ) {
             @Override
             protected void populateViewHolder(MassegeViewHolder viewHolder, Massege model, int position) {
@@ -143,7 +142,7 @@ public class ChatRoom extends AppCompatActivity {
                 viewHolder.setT_profile_fullname(model.getT_profile_fullname());
                 viewHolder.setTxt(model.getTxt());
                 viewHolder.setT_profile_photo_50(getApplicationContext(), model.getT_profile_photo_50());
-                viewHolder.setT_photo_photo_130(getApplicationContext(), model.getT_photo_photo_130());
+                viewHolder.setT_photo_photo_604(getApplicationContext(), model.getT_photo_photo_604());
             }
         };
 
@@ -228,9 +227,9 @@ public class ChatRoom extends AppCompatActivity {
             Picasso.with(ctx).load(t_profile_photo_50).into(post_image);
         }
 
-        public void setT_photo_photo_130(Context ctx, String t_photo_photo_130){
+        public void setT_photo_photo_604(Context ctx, String t_photo_photo_604){
             ImageView post_2image = (ImageView) itemView.findViewById(R.id.imageView);
-            Picasso.with(ctx).load(t_photo_photo_130).into(post_2image);
+            Picasso.with(ctx).load(t_photo_photo_604).into(post_2image);
         }
     }
 

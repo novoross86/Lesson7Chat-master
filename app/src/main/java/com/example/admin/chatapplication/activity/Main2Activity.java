@@ -1,44 +1,30 @@
 package com.example.admin.chatapplication.activity;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.admin.chatapplication.R;
 import com.example.admin.chatapplication.entity.Post;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 
 public class Main2Activity extends AppCompatActivity {
@@ -100,40 +86,40 @@ public class Main2Activity extends AppCompatActivity {
         if(currentChannel == null) {
             switch (position) {
                 case 0:
-                    currentChannel = "1tv";
+                    currentChannel = "ОРТ";
                     break;
                 case 1:
-                    currentChannel = "championat";
+                    currentChannel = "Россия";
                     break;
                 case 2:
-                    currentChannel = "ctc";
+                    currentChannel = "ТНТ";
                     break;
                 case 3:
-                    currentChannel = "europaplus";
+                    currentChannel = "НТВ";
                     break;
                 case 4:
-                    currentChannel = "fhr";
+                    currentChannel = "СТС";
                     break;
                 case 5:
-                    currentChannel = "muztv";
+                    currentChannel = "Центр";
                     break;
                 case 6:
-                    currentChannel = "nrj";
+                    currentChannel = "РенТВ";
                     break;
                 case 7:
-                    currentChannel = "rt_russian";
+                    currentChannel = "Пятый канал";
                     break;
                 case 8:
-                    currentChannel = "интересное";
+                    currentChannel = "Матч";
                     break;
                 case 9:
-                    currentChannel = "не интересное";
+                    currentChannel = "ТВ3";
                     break;
                 case 10:
-                    currentChannel = "очень интересное";
+                    currentChannel = "Домашний";
                     break;
                 case 11:
-                    currentChannel = "ОРТ";
+                    currentChannel = "2х2";
                     break;
                 case 12:
                     currentChannel = "Пятница";
@@ -148,14 +134,14 @@ public class Main2Activity extends AppCompatActivity {
                     currentChannel = "Че";
                     break;
                 case 16:
-                    currentChannel = "Ю";
+                    currentChannel = "Телеканал Ю";
                     break;
             }
         }
 
         //090117
         //mQueryCurrentRequest = mDatabase.orderByChild("channel").equalTo(currentChannel);
-        mQueryCurrentRequest = mDatabase.child(currentChannel);
+        mQueryCurrentRequest = mDatabase.child(currentChannel).limitToLast(20);
 
         //090117
         //set Title on actionBar
@@ -233,7 +219,6 @@ public class Main2Activity extends AppCompatActivity {
                         Intent chatRoomIntent = new Intent(Main2Activity.this, ChatRoom.class);
                         //получение ид чата
                         chatRoomIntent.putExtra("chat_name", post_key);
-                        //chatRoomIntent.putExtra("user_name", user_name);
                         chatRoomIntent.putExtra("chat_title", chat_title);
                         chatRoomIntent.putExtra("currentChannel", currentChannel);
                         startActivity(chatRoomIntent);
